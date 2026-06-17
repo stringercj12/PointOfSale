@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="../src/PointOfSale.API/PointOfSale.API.csproj" />
+    <Project Path="../src/PointOfSale.Application/PointOfSale.Application.csproj" />
+    <Project Path="../src/PointOfSale.Communication/PointOfSale.Communication.csproj" Id="cf568279-7864-4f5e-a5e1-481244a08c6f" />
+    <Project Path="../src/PointOfSale.Domain/PointOfSale.Domain.csproj" />
+    <Project Path="../src/PointOfSale.Infra/PointOfSale.Infra.csproj" />
+  </Folder>
+</Solution>
