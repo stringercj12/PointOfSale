@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
+using PointOfSale.Application.DTOs.Request.Users;
+using PointOfSale.Application.DTOs.Response.Users;
 using PointOfSale.Application.Exceptions;
 using PointOfSale.Application.Validations;
-using PointOfSale.Communication.Request.User;
-using PointOfSale.Communication.Response.User;
 using PointOfSale.Domain.Entities;
 using PointOfSale.Infra.Repositories.Interfaces;
 
-namespace PointOfSale.Application.Users.Create
+namespace PointOfSale.Application.Services.Users.Create
 {
     public class UserCreateService : IUserCreateService
     {

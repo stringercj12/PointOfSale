@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using PointOfSale.Application.Users.Create;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
+using PointOfSale.Application.Services.Users.Create;
+using PointOfSale.Application.Services.Users.Get;
 using PointOfSale.Application.Validations;
-using FluentValidation;
 
 namespace PointOfSale.Application
 {
@@ -11,6 +12,7 @@ namespace PointOfSale.Application
         {
             services.AddValidatorsFromAssemblyContaining<UserCreateRequestValidator>();
             services.AddScoped<IUserCreateService, UserCreateService>();
+            services.AddScoped<IUserReadService, UserReadService>(); 
             //services.AddScoped<IProductService, ProductService>();
             //services.AddScoped<IPaymentService, PaymentService>();
             //services.AddScoped<IOrderService, OrderService>();

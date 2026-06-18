@@ -24,9 +24,21 @@ namespace PointOfSale.Infra.Repositories
             return await _context.Users.AnyAsync(user => user.Email == email || user.Username == username);
         }
 
+        public async Task<User?> FindByIdAsync(int userId)
+        {
+            return await _context.Users.Where(user => user.Id == userId).AsNoTracking().FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetAllActiveAsync()
+        {
+            return await _context.Users
+                .AsNoTracking()
+                .Where(u => u.Active).ToListAsync();
+        }
+
         public async Task<User?> GetByEmailAsync(string email)
         {
-            return await _context.Users.Where(user => user.Email == email).FirstOrDefaultAsync();
+            return await _context.Users.Where(user => user.Email == email).AsNoTracking().FirstOrDefaultAsync();
         }
     }
 }

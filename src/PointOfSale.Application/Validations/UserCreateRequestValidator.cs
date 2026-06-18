@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using PointOfSale.Communication.Request.User;
+using PointOfSale.Application.DTOs.Request.Users;
 
 namespace PointOfSale.Application.Validations
 {

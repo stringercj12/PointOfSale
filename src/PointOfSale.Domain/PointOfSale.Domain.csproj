@@ -18,8 +18,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\PointOfSale.Communication\PointOfSale.Communication.csproj" />
-  </ItemGroup>
-
 </Project>

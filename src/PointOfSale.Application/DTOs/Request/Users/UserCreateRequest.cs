@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using PointOfSale.Communication.Enums;
+using PointOfSale.Domain.Enums;
 
-namespace PointOfSale.Communication.Request.User
+namespace PointOfSale.Application.DTOs.Request.Users
 {
     public record UserCreateRequest(
         string Name,

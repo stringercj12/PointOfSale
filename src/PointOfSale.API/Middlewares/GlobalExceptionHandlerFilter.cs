@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using PointOfSale.Application.DTOs.Response;
 using PointOfSale.Application.Exceptions;
-using PointOfSale.Communication.Response;
 
 namespace PointOfSale.API.Middlewares
 {

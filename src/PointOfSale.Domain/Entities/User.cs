@@ -1,5 +1,4 @@
-﻿using BCrypt.Net;
-using PointOfSale.Communication.Enums;
+﻿using PointOfSale.Domain.Enums;
 
 namespace PointOfSale.Domain.Entities
 {

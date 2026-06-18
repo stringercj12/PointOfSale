@@ -1,4 +1,4 @@
-﻿namespace PointOfSale.Communication.Response
+﻿namespace PointOfSale.Application.DTOs.Response
 {
     public class ErrorResponse
     {
