@@ -1,3 +1,9 @@
 <Solution>
-  <Project Path="PointOfSale.csproj" />
+  <Folder Name="/src/">
+    <Project Path="src/PointOfSale.API/PointOfSale.API.csproj" />
+    <Project Path="src/PointOfSale.Application/PointOfSale.Application.csproj" />
+    <Project Path="src/PointOfSale.Communication/PointOfSale.Communication.csproj" />
+    <Project Path="src/PointOfSale.Domain/PointOfSale.Domain.csproj" />
+    <Project Path="src/PointOfSale.Infra/PointOfSale.Infra.csproj" />
+  </Folder>
 </Solution>
