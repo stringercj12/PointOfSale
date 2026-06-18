@@ -1,6 +1,0 @@
-@PointOfSale_HostAddress = http://localhost:5118
-
-GET {{PointOfSale_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
