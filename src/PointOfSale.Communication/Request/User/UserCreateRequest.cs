@@ -10,6 +10,6 @@ namespace PointOfSale.Communication.Request.User
         string Password,
         RoleEnum Role,
         bool Active,
-        IFormFile ProfileImage
+        IFormFile? ProfileImage
     );
 }

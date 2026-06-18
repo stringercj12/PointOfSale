@@ -1,7 +1,7 @@
-﻿using PointOfSale.Application.Exceptions;
+﻿using FluentValidation;
+using PointOfSale.Application.Exceptions;
 using PointOfSale.Application.Validations;
 using PointOfSale.Communication.Request.User;
-using PointOfSale.Communication.Response;
 using PointOfSale.Communication.Response.User;
 using PointOfSale.Domain.Entities;
 using PointOfSale.Infra.Repositories.Interfaces;
@@ -12,16 +12,18 @@ namespace PointOfSale.Application.Users.Create
     {
         private readonly IUserRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IValidator<UserCreateRequest> _validator;
 
-        public UserCreateService(IUserRepository repository, IUnitOfWork unitOfWork)
+        public UserCreateService(IUserRepository repository, IUnitOfWork unitOfWork, IValidator<UserCreateRequest> validator)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
+            _validator = validator;
         }
 
         public async Task<UserCreateResponse> CreateUserAsync(UserCreateRequest request)
         {
-            ValidateRequest(request);
+            _validator.ValidateAndThrowCustom(request);
 
             var exists = await _repository.EmailOrUsernameExistsAsync(request.Email, request.Username);
             if (exists)
@@ -52,21 +54,6 @@ namespace PointOfSale.Application.Users.Create
                  user.Id,
                  user.Email
              );
-        }
-
-
-        private void ValidateRequest(UserCreateRequest request)
-        {
-
-            var validator = new UserCreateRequestValidator();
-            var resultValidator = validator.Validate(request);
-
-            if (resultValidator.IsValid == false)
-            {
-                var result = resultValidator.Errors.Select(error => error.ErrorMessage).ToList();
-                throw new ErrorOnValidationException(result);
-            }
-
         }
     }
 }
