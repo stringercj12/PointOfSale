@@ -5,6 +5,6 @@ namespace PointOfSale.Application.Services.Users.Create
 {
     public interface IUserCreateService
     {
-        Task<UserCreateResponse> CreateUserAsync(UserCreateRequest request);
+        Task<UserCreateResponse> ExecuteAsync(UserCreateRequest request);
     }
 }

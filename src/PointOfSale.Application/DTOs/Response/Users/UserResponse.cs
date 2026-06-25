@@ -4,7 +4,7 @@ using PointOfSale.Application.Extensions;
 
 namespace PointOfSale.Application.DTOs.Response.Users
 {
-    
+
     public record UserResponse(
          int Id,
         string Name,
@@ -16,7 +16,7 @@ namespace PointOfSale.Application.DTOs.Response.Users
         string ProfileImage
     )
     {
-        public static UserResponse From(User user)
+        public static UserResponse? From(User user)
         {
             if (user is null) return null;
 
@@ -28,7 +28,7 @@ namespace PointOfSale.Application.DTOs.Response.Users
                 user.Role,
                 user.Role.GetDescription(),
                 user.Active,
-                user.ProfileImage
+                user.ProfileImage ?? string.Empty
             );
         }
     }

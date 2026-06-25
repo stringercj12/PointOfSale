@@ -14,7 +14,7 @@ namespace PointOfSale.Infra.Repositories
             _context = context;
         }
 
-        public async Task CreateAsync(User user)
+        public async Task AddAsync(User user)
         {
             await _context.Users.AddAsync(user);
         }
@@ -24,14 +24,27 @@ namespace PointOfSale.Infra.Repositories
             return await _context.Users.AnyAsync(user => user.Email == email || user.Username == username);
         }
 
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _context.Users.AnyAsync(user => user.Email == email);
+        }
+
         public async Task<User?> FindByIdAsync(int userId)
         {
             return await _context.Users.Where(user => user.Id == userId).AsNoTracking().FirstOrDefaultAsync();
         }
+        public void UpdateAsync(User user)
+        {
+            _context.Users.Update(user);
+        }
+        public void DeleteAsync(User user)
+        {
+            _context.Users.Remove(user);
+        }
 
         public async Task<IEnumerable<User>> GetAllActiveAsync()
         {
-            return await _context.Users
+             return await _context.Users
                 .AsNoTracking()
                 .Where(u => u.Active).ToListAsync();
         }
@@ -39,6 +52,17 @@ namespace PointOfSale.Infra.Repositories
         public async Task<User?> GetByEmailAsync(string email)
         {
             return await _context.Users.Where(user => user.Email == email).AsNoTracking().FirstOrDefaultAsync();
+        }
+
+        public Task DeleteAsync(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<User?> FindByEmailOrUsernameAsync(string login)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == login || u.Username == login);
         }
     }
 }

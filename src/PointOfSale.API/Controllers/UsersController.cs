@@ -3,6 +3,7 @@ using PointOfSale.Application.DTOs.Request.Users;
 using PointOfSale.Application.DTOs.Response.Users;
 using PointOfSale.Application.Services.Users.Create;
 using PointOfSale.Application.Services.Users.Get;
+using PointOfSale.Application.Services.Users.Update;
 
 namespace PointOfSale.API.Controllers
 {
@@ -14,11 +15,21 @@ namespace PointOfSale.API.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<UserCreateResponse>> CreateUser([FromServices] IUserCreateService userCreateService, [FromForm] UserCreateRequest request)
+        public async Task<ActionResult<UserCreateResponse>> CreateUser([FromServices] IUserCreateService userWriteService, [FromForm] UserCreateRequest request)
         {
-            var user = await userCreateService.CreateUserAsync(request);
+            var user = await userWriteService.ExecuteAsync(request);
 
             return Created(string.Empty, user);
+        }
+
+        [HttpPut("{userId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> Update([FromServices] IUserUpdateService userUpdateService, [FromRoute] int userId, [FromBody] UserUpdateRequest request)
+        {
+            await userUpdateService.ExecuteAsync(request, userId);
+
+            return NoContent();
         }
 
         [HttpGet("{userId}")]
