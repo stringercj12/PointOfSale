@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PointOfSale.Domain.Entities;
+using PointOfSale.Domain.Enums;
 using PointOfSale.Infra.DataAccess;
 using PointOfSale.Infra.Repositories.Interfaces;
 
@@ -37,16 +38,14 @@ namespace PointOfSale.Infra.Repositories
         {
             _context.Users.Update(user);
         }
-        public void DeleteAsync(User user)
+        public void RemoveAsync(User user)
         {
             _context.Users.Remove(user);
         }
 
-        public async Task<IEnumerable<User>> GetAllActiveAsync()
+        public async Task<IEnumerable<User>> GetAllActiveAsync(bool active = true)
         {
-             return await _context.Users
-                .AsNoTracking()
-                .Where(u => u.Active).ToListAsync();
+            return await _context.Users.AsNoTracking().Where(u => u.Active == active).ToListAsync();
         }
 
         public async Task<User?> GetByEmailAsync(string email)
@@ -54,15 +53,16 @@ namespace PointOfSale.Infra.Repositories
             return await _context.Users.Where(user => user.Email == email).AsNoTracking().FirstOrDefaultAsync();
         }
 
-        public Task DeleteAsync(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<User?> FindByEmailOrUsernameAsync(string login)
         {
             return await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == login || u.Username == login);
+        }
+
+        public async Task<int> CountActiveAdminsAsync()
+        {
+            return await _context.Users
+             .CountAsync(u => u.Role == RoleEnum.ADMIN && u.Active);
         }
     }
 }

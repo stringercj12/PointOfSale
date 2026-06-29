@@ -64,16 +64,8 @@ namespace PointOfSale.Domain.Entities
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public void Activate()
+        public void ToggleActiveStatus()
         {
-            if (!Active) return;
-            Active = true;
-            UpdatedAt = DateTime.UtcNow;
-        }
-
-        public void Desactivate()
-        {
-            if (!Active) return;
             Active = false;
             UpdatedAt = DateTime.UtcNow;
         }

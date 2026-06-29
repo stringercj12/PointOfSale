@@ -16,9 +16,9 @@ namespace PointOfSale.Application.DTOs.Response.Users
         string ProfileImage
     )
     {
-        public static UserResponse? From(User user)
+        public static UserResponse From(User user)
         {
-            if (user is null) return null;
+            ArgumentNullException.ThrowIfNull(user);
 
             return new UserResponse(
                 user.Id,

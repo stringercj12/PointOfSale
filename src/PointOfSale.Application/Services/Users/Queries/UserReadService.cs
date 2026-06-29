@@ -23,11 +23,11 @@ namespace PointOfSale.Application.Services.Users.Get
             return UserResponse.From(user);
         }
 
-        public async Task<IEnumerable<UserResponse>> GetAllActiveAsync()
+        public async Task<IEnumerable<UserResponse>> GetAllActiveAsync(bool active = true)
         {
-            var users = await _userRepository.GetAllActiveAsync();
+            var users = await _userRepository.GetAllActiveAsync(active);
 
-            return users.Select(user => UserResponse.From(user));
+            return users.Select(user => UserResponse.From(user)).ToList();
         }
     }
 }

@@ -8,11 +8,11 @@ namespace PointOfSale.Infra.Repositories.Interfaces
         Task<bool> EmailExistsAsync(string email); 
         Task<User?> GetByEmailAsync(string email); 
         Task<User?> FindByIdAsync(int userId);
-        Task<IEnumerable<User>> GetAllActiveAsync();
+        Task<IEnumerable<User>> GetAllActiveAsync(bool active);
         Task AddAsync(User user);
         void UpdateAsync(User user);
-        Task DeleteAsync(int userId);
+        void RemoveAsync(User user);
         Task<User?> FindByEmailOrUsernameAsync(string login);
-
+        Task<int> CountActiveAdminsAsync();
     }
 }

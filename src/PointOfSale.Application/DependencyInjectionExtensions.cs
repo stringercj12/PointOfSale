@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PointOfSale.Application.Services.Common;
 using PointOfSale.Application.Services.Common.Interfaces;
 using PointOfSale.Application.Services.Users.Create;
+using PointOfSale.Application.Services.Users.Delete;
 using PointOfSale.Application.Services.Users.Get;
 using PointOfSale.Application.Services.Users.Login;
 using PointOfSale.Application.Services.Users.Update;
@@ -23,7 +24,8 @@ namespace PointOfSale.Application
             services.AddScoped<IUserReadService, UserReadService>();
             services.AddScoped<IUserLoginService, UserLoginService>();
             services.AddScoped<IUserUpdateService, UserUpdateService>();
-            services.AddScoped<IUserChangePasswordService, UserChangePasswordService>();
+            services.AddScoped<IUserChangePasswordService, UserChangePasswordService>(); 
+            services.AddScoped<IUserDeleteService, UserDeleteService>(); 
             services.AddScoped<IStorageService, StorageService>();
             //services.AddScoped<IProductService, ProductService>();
             //services.AddScoped<IPaymentService, PaymentService>();
