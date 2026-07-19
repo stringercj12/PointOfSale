@@ -1,7 +1,9 @@
-﻿namespace PointOfSale.Application.Services.Common.Interfaces
+﻿using PointOfSale.Application.DTOs.Request.Login;
+
+namespace PointOfSale.Application.Services.Common.Interfaces
 {
     public interface IUserChangePasswordService
     {
-        Task ExecuteAsync(int userId, string password);
+        Task ExecuteAsync(ResetPasswordRequest request);
     }
 }

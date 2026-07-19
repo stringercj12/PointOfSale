@@ -27,10 +27,6 @@ namespace PointOfSale.Application.Services.Users.Login
             {
                 isPasswordValid = _cryptoService.VerifyPassword(request.Password, user.PasswordHash);
             }
-            else
-            {
-                _cryptoService.VerifyPassword(request.Password, "$2a$12$LxbYV9V7.P6YmH9R3Z7OeuB2hM06L2B5f1R6qA8C3X7gUuD2D5M1.");
-            }
 
             if (user is null || !isPasswordValid)
             {
