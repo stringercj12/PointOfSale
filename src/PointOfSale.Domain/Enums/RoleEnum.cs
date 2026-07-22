@@ -1,9 +1,8 @@
-﻿namespace PointOfSale.Domain.Enums
+﻿namespace PointOfSale.Domain.Enums;
+
+public enum RoleEnum
 {
-    public enum RoleEnum
-    {
-        ADMIN = 0,
-        CLIENT = 1,
-        OPERATION = 2
-    }
+    ADMIN = 0,
+    CLIENT = 1,
+    OPERATION = 2
 }

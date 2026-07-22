@@ -1,10 +1,12 @@
 ﻿using PointOfSale.Domain.Enums;
 
-namespace PointOfSale.Application.Extensions
+namespace PointOfSale.Application.Extensions;
+
+public static class RoleEnumExtensions
 {
-    public static class RoleEnumExtensions
+    public static string GetDescription(this RoleEnum role)
     {
-        public static string GetDescription(this RoleEnum role) => role switch
+        return role switch
         {
             RoleEnum.ADMIN => "Administrador",
             RoleEnum.CLIENT => "Cliente",

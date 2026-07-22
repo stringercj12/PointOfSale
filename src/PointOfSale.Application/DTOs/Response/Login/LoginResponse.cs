@@ -1,22 +1,21 @@
-﻿using PointOfSale.Domain.Enums;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
+using PointOfSale.Domain.Enums;
 
-namespace PointOfSale.Application.DTOs.Response.Login
-{
-    public record LoginResponse(
-        string Token,
-        string TokenType,
-        long ExpiresIn,
-        UserSessionInfo User
-    );
+namespace PointOfSale.Application.DTOs.Response.Login;
 
-    public record UserSessionInfo(
-        int Id,
-        string Name,
-        string Email,
+public record LoginResponse(
+    string Token,
+    string TokenType,
+    long ExpiresIn,
+    UserSessionInfo User
+);
 
-        [property: JsonConverter(typeof(JsonStringEnumConverter))]
-        [property: JsonPropertyName("role")] RoleEnum Role,
-        string? ProfileImage
-    );
-}
+public record UserSessionInfo(
+    int Id,
+    string Name,
+    string Email,
+    [property: JsonConverter(typeof(JsonStringEnumConverter))]
+    [property: JsonPropertyName("role")]
+    RoleEnum Role,
+    string? ProfileImage
+);

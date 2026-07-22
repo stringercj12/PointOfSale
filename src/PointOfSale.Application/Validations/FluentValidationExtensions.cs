@@ -1,21 +1,18 @@
 ﻿using FluentValidation;
 using PointOfSale.Application.Exceptions;
 
-namespace PointOfSale.Application.Validations
+namespace PointOfSale.Application.Validations;
+
+public static class FluentValidationExtensions
 {
-    public static class FluentValidationExtensions
+    public static void ValidateAndThrowCustom<T>(this IValidator<T> validator, T instance)
     {
-        public static void ValidateAndThrowCustom<T>(this IValidator<T> validator, T instance)
+        var resultValidator = validator.Validate(instance);
+
+        if (!resultValidator.IsValid)
         {
-
-            var resultValidator = validator.Validate(instance);
-
-            if (resultValidator.IsValid == false)
-            {
-                var result = resultValidator.Errors.Select(error => error.ErrorMessage).ToList();
-                throw new ErrorOnValidationException(result);
-            }
-
+            var result = resultValidator.Errors.Select(error => error.ErrorMessage).ToList();
+            throw new ErrorOnValidationException(result);
         }
     }
 }

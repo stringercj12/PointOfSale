@@ -1,7 +1,5 @@
-﻿namespace PointOfSale.Domain.Entities
-{
-    public class Role
-    {
+﻿namespace PointOfSale.Domain.Entities;
 
-    }
+public class Role
+{
 }

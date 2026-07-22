@@ -1,5 +1,3 @@
-﻿namespace PointOfSale.Application.DTOs.Request.Login
-{
+﻿namespace PointOfSale.Application.DTOs.Request.Login;
 
-    public record ResetPasswordRequest(int UserId, string NewPassword);
-}
+public record ResetPasswordRequest(int UserId, string NewPassword);
