@@ -57,9 +57,6 @@ namespace PointOfSale.API.Controllers
             [FromRoute] Guid productId,
             [FromForm] List<IFormFile> files, [FromServices] IUpdateProductPhotosUseCase useCase)
         {
-
-            if (files.Count == 0)
-                throw new NotFoundException("Informe pelo menos um arquivo");
             
             var request = new UpdateProductPhotosRequest(productId, files);
 

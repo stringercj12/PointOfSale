@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using PointOfSale.Application.DTOs.Request.Categories;
-using PointOfSale.Application.UseCases.Categories.CreateCategory;
+using PointOfSale.Application.DTOs.Response.Product;
+using PointOfSale.Application.UseCases.Categories.Commands.CreateCategory;
+using PointOfSale.Application.UseCases.Categories.Queries.GetCategoriesList;
+using PointOfSale.Application.UseCases.Products.Queries.GetProductsList;
 
 namespace PointOfSale.API.Controllers;
 
@@ -17,5 +20,18 @@ public class CategoryController : ControllerBase
         await useCase.ExecuteAsync(request);
 
         return Created();
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<CategoryResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Get([FromServices] IGetCategoriesListUseCase useCase)
+    {
+        var products = await useCase.ExecuteAsync();
+
+        if (products.Count == 0)
+            return NoContent();
+
+        return Ok(products);
     }
 }

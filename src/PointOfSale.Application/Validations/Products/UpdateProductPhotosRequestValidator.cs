@@ -11,7 +11,7 @@ public class UpdateProductPhotosRequestValidator : AbstractValidator<UpdateProdu
             .NotEmpty().WithMessage("O Id do produto é obrigatório.");
 
         RuleFor(x => x.ProductPhotos)
-            .NotEmpty().WithMessage("O Id ddsdsdsddo produto é obrigatório.");
+            .NotEmpty().WithMessage("Informe pelo menos uma imagem do produto.");
 
         RuleForEach(x => x.ProductPhotos)
             .SetValidator(new ImageFileValidator());

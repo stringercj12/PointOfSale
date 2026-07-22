@@ -1,6 +1,6 @@
 using PointOfSale.Application.DTOs.Request.Categories;
 
-namespace PointOfSale.Application.UseCases.Categories.CreateCategory;
+namespace PointOfSale.Application.UseCases.Categories.Commands.CreateCategory;
 
 public interface ICreateCategoryUseCase
 {

@@ -5,7 +5,7 @@ using PointOfSale.Application.Validations;
 using PointOfSale.Domain.Entities;
 using PointOfSale.Domain.Repositories;
 
-namespace PointOfSale.Application.UseCases.Categories.CreateCategory;
+namespace PointOfSale.Application.UseCases.Categories.Commands.CreateCategory;
 
 public class CreateCategoryUseCase : ICreateCategoryUseCase
 {

@@ -2,7 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using PointOfSale.Application.Services.Users.Get;
 using PointOfSale.Application.Services.Users.Update;
-using PointOfSale.Application.UseCases.Categories.CreateCategory;
+using PointOfSale.Application.UseCases.Categories.Commands.CreateCategory;
+using PointOfSale.Application.UseCases.Categories.Queries.GetCategoriesList;
 using PointOfSale.Application.UseCases.Common.Interfaces;
 using PointOfSale.Application.UseCases.Products.Commands.CreateProduct;
 using PointOfSale.Application.UseCases.Products.Commands.UpdateProductBasicInfo;
@@ -45,6 +46,7 @@ public static class DependencyInjectionExtensions
 
         // Use Cases - Categories
         services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
+        services.AddScoped<IGetCategoriesListUseCase, GetCategoriesListUseCase>();
 
         return services;
     }
