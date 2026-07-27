@@ -4,5 +4,5 @@ namespace PointOfSale.Application.UseCases.Products.Queries.GetProductsList;
 
 public interface IGetProductsListUseCase
 {
-    Task<IReadOnlyCollection<ProductResponse>> ExecuteAsync(GetProductsListRequest request);
+    Task<IEnumerable<ProductListResponse>> ExecuteAsync(GetProductsListRequest request);
 }

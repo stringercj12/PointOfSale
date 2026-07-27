@@ -1,18 +1,18 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Http;
+using PointOfSale.Application.DTOs.Request.Product;
 
 namespace PointOfSale.Application.Validations.Products;
 
-public class ImageFileValidator : AbstractValidator<IFormFile>
+public class ImageFileValidator : AbstractValidator<ProductPhotoListRequest>
 {
     private const long MaxFileSizeInBytes = 2 * 1024 * 1024;
     private static readonly string[] AllowedContentTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
     public ImageFileValidator()
     {
-        RuleFor(file => file).NotNull().WithMessage("An image file is required.");
+        RuleFor(file => file.Photo).NotNull().WithMessage("An image file is required.");
 
-        RuleFor(file => file.ContentType)
+        RuleFor(file => file.Photo.ContentType)
             .NotNull()
             .Must(contentType => AllowedContentTypes.Contains(contentType))
             .WithMessage("Unsupported file type. Only JPEG, PNG, and GIF are allowed.");

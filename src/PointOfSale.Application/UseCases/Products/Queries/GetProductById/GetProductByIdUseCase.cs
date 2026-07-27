@@ -16,20 +16,27 @@ public class GetProductByIdUseCase : IGetProductByIdUseCase
 
     public async Task<ProductResponse> ExecuteAsync(Guid productId)
     {
-        // 1. Busca no repositório
         var product = await _productRepository.GetByIdAsync(productId)
                       ?? throw new NotFoundException($"Produto com ID '{productId}' não foi encontrado.");
 
-        // 2. Mapeia a Entidade para o DTO de Saída (Response)
         return new ProductResponse(
-            product.ProductId,
+            product.Id,
             product.Name,
             product.Description,
             product.Price,
             product.SKU,
             product.Active,
             product.ProductCategories.Select(c => c.CategoryId).ToList(),
-            product.Attachments.Select(a => new AttachmentResponse(a.Id, a.Path)).ToList(),
+            product.ProductAttachments.Select(a => new AttachmentResponse(
+                a.Attachment.Id,
+                a.Attachment.Path,
+                a.Attachment.Extension,
+                a.Attachment.ContentType,
+                a.Attachment.Name,
+                a.Attachment.OriginalName,
+                a.IsPrimary,
+                a.DisplayOrder
+                )).ToList(),
             product.CreatedAt,
             product.UpdatedAt
         );

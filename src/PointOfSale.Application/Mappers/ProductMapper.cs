@@ -10,8 +10,17 @@ public static class ProductMapper
     {
         ArgumentNullException.ThrowIfNull(product);
 
-        var attachments = product.Attachments
-            .Select(a => new AttachmentResponse(a.Id, a.Path))
+        var attachments = product.ProductAttachments
+            .Select(a => new AttachmentResponse(
+                a.Attachment.Id,
+                a.Attachment.Path,
+                a.Attachment.Extension,
+                a.Attachment.ContentType,
+                a.Attachment.Name,
+                a.Attachment.OriginalName,
+                a.IsPrimary,
+                a.DisplayOrder
+                ))
             .ToList()
             .AsReadOnly();
 
@@ -21,7 +30,7 @@ public static class ProductMapper
             .AsReadOnly();
 
         return new ProductResponse(
-            product.ProductId,
+            product.Id,
             product.Name,
             product.Description,
             product.Price,

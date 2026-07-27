@@ -101,11 +101,9 @@ namespace PointOfSale.Infra.Migrations
 
             modelBuilder.Entity("PointOfSale.Domain.Entities.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -127,9 +125,6 @@ namespace PointOfSale.Infra.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("SKU")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -145,6 +140,27 @@ namespace PointOfSale.Infra.Migrations
                         .IsUnique();
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("PointOfSale.Domain.Entities.ProductAttachment", b =>
+                {
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AttachmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPrimary")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ProductId", "AttachmentId");
+
+                    b.HasIndex("AttachmentId");
+
+                    b.ToTable("ProductAttachment");
                 });
 
             modelBuilder.Entity("PointOfSale.Domain.Entities.ProductCategory", b =>
@@ -212,26 +228,30 @@ namespace PointOfSale.Infra.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ProductAttachments", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("AttachmentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ProductId", "AttachmentId");
-
-                    b.HasIndex("AttachmentId");
-
-                    b.ToTable("ProductAttachments", (string)null);
-                });
-
             modelBuilder.Entity("PointOfSale.Domain.Entities.Product", b =>
                 {
                     b.HasOne("PointOfSale.Domain.Entities.Category", null)
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("PointOfSale.Domain.Entities.ProductAttachment", b =>
+                {
+                    b.HasOne("PointOfSale.Domain.Entities.Attachment", "Attachment")
+                        .WithMany("Products")
+                        .HasForeignKey("AttachmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PointOfSale.Domain.Entities.Product", "Product")
+                        .WithMany("ProductAttachments")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attachment");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("PointOfSale.Domain.Entities.ProductCategory", b =>
@@ -245,24 +265,13 @@ namespace PointOfSale.Infra.Migrations
                     b.HasOne("PointOfSale.Domain.Entities.Product", null)
                         .WithMany("ProductCategories")
                         .HasForeignKey("ProductId")
-                        .HasPrincipalKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProductAttachments", b =>
+            modelBuilder.Entity("PointOfSale.Domain.Entities.Attachment", b =>
                 {
-                    b.HasOne("PointOfSale.Domain.Entities.Attachment", null)
-                        .WithMany()
-                        .HasForeignKey("AttachmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PointOfSale.Domain.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("PointOfSale.Domain.Entities.Category", b =>
@@ -272,6 +281,8 @@ namespace PointOfSale.Infra.Migrations
 
             modelBuilder.Entity("PointOfSale.Domain.Entities.Product", b =>
                 {
+                    b.Navigation("ProductAttachments");
+
                     b.Navigation("ProductCategories");
                 });
 #pragma warning restore 612, 618

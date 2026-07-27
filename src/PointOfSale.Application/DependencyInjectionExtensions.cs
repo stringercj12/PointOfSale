@@ -17,6 +17,7 @@ using PointOfSale.Application.UseCases.Users.Login;
 using PointOfSale.Application.UseCases.Users.Queries;
 using PointOfSale.Application.UseCases.Users.Update;
 using PointOfSale.Application.Validations.Users;
+using PointOfSale.Domain.Repositories;
 
 namespace PointOfSale.Application;
 
@@ -47,6 +48,8 @@ public static class DependencyInjectionExtensions
         // Use Cases - Categories
         services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
         services.AddScoped<IGetCategoriesListUseCase, GetCategoriesListUseCase>();
+
+        // Use Cases - Attachment
 
         return services;
     }

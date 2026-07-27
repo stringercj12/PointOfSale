@@ -7,22 +7,21 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="4.0.100.6"/>
-        <PackageReference Include="AWSSDK.S3" Version="4.0.101.4"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.10"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10"/>
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.10"/>
+        <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="4.0.100.6" />
+        <PackageReference Include="AWSSDK.S3" Version="4.0.101.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.10" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\PointOfSale.Application\PointOfSale.Application.csproj"/>
-        <ProjectReference Include="..\PointOfSale.Domain\PointOfSale.Domain.csproj"/>
+        <ProjectReference Include="..\PointOfSale.Application\PointOfSale.Application.csproj" />
+        <ProjectReference Include="..\PointOfSale.Domain\PointOfSale.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Migrations\"/>
-        <Folder Include="Persistence\"/>
+        <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>

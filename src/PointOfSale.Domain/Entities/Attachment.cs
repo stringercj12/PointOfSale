@@ -4,7 +4,6 @@ namespace PointOfSale.Domain.Entities;
 
 public class Attachment
 {
-    private readonly List<Product> _products = [];
 
     private Attachment()
     {
@@ -21,7 +20,8 @@ public class Attachment
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
-    public IReadOnlyCollection<Product> Products => _products.AsReadOnly();
+    public IReadOnlyCollection<ProductAttachment> Products => _products.AsReadOnly();
+    private readonly List<ProductAttachment> _products = [];
 
     public static Attachment Create(
         string path,

@@ -23,14 +23,12 @@ public class LocalStorageService : IStorageService
         if (string.IsNullOrWhiteSpace(path))
             throw new ArgumentException("O caminho do arquivo não pode ser nulo ou vazio.", nameof(path));
 
-        // Normaliza separadores de caminho para o S.O. local
         var normalizedPath = path.Replace('/', Path.DirectorySeparatorChar);
         var fullPath = Path.Combine(_baseStoragePath, normalizedPath);
         var directory = Path.GetDirectoryName(fullPath);
 
         if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory)) Directory.CreateDirectory(directory);
 
-        // Escreve de forma assíncrona garantindo o descarte imediato do Stream do disco
         await using (var destinationStream = new FileStream(
                          fullPath,
                          FileMode.Create,
@@ -44,7 +42,6 @@ public class LocalStorageService : IStorageService
             await fileStream.CopyToAsync(destinationStream);
         }
 
-        // Retorna o path relativo padronizado em estilo URL (POSIX)
         return path.Replace('\\', '/');
     }
 

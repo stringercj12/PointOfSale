@@ -14,24 +14,32 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
-    public async Task<Product?> GetByIdAsync(Guid productId)
+    public async Task<Product?> GetByIdAsync(Guid id)
     {
         return await _context.Products
             .AsNoTracking()
-            .Include(p => p.ProductCategories)
-            .Include(p => p.Attachments)
-            .FirstOrDefaultAsync(product => product.ProductId == productId);
+            .Include(p => p.ProductAttachments)
+                .ThenInclude(pa => pa.Attachment)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<List<Product>> GetFilteredAsync(bool? onlyActive, string? searchTerm)
+    public async Task<Product?> GetForUpdateAsync(Guid id)
+    {
+        return await _context.Products
+            .Include(p => p.ProductAttachments)
+                .ThenInclude(pa => pa.Attachment)
+            .FirstOrDefaultAsync(x => x.Id == id);
+    }
+
+    public async Task<IEnumerable<Product>> GetFilteredAsync(bool? onlyActive, string? searchTerm)
     {
         var query = _context.Products
             .AsNoTracking()
             .Include(p => p.ProductCategories)
-            .Include(p => p.Attachments)
+            .Include(p => p.ProductAttachments)
             .AsQueryable();
 
-        if (onlyActive.HasValue)
+         if (onlyActive.HasValue)
             query = query.Where(p => p.Active == onlyActive.Value);
 
         if (!string.IsNullOrWhiteSpace(searchTerm))

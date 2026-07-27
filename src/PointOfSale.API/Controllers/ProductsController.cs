@@ -14,15 +14,11 @@ namespace PointOfSale.API.Controllers
     public class ProductsController : ControllerBase
     {
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ProductResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(IEnumerable<ProductListResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromQuery] GetProductsListRequest request,
             [FromServices] IGetProductsListUseCase useCase)
         {
             var products = await useCase.ExecuteAsync(request);
-
-            if (products.Count == 0)
-                return NoContent();
 
             return Ok(products);
         }
@@ -55,7 +51,7 @@ namespace PointOfSale.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdatePhotos(
             [FromRoute] Guid productId,
-            [FromForm] List<IFormFile> files, [FromServices] IUpdateProductPhotosUseCase useCase)
+            [FromForm] List<ProductPhotoListRequest> files, [FromServices] IUpdateProductPhotosUseCase useCase)
         {
             
             var request = new UpdateProductPhotosRequest(productId, files);

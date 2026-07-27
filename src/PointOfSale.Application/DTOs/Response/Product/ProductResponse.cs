@@ -9,8 +9,8 @@ public record ProductResponse(
     decimal Price,
     string SKU,
     bool Active,
-    IReadOnlyCollection<Guid> Categories,
-    IReadOnlyCollection<AttachmentResponse> Attachments,
+    IEnumerable<Guid> Categories,
+    IEnumerable<AttachmentResponse> Attachments,
     DateTime CreatedAt,
     DateTime? UpdatedAt
 );

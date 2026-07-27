@@ -1,4 +1,3 @@
-using PointOfSale.Application.DTOs.Response.Attachment;
 using PointOfSale.Application.DTOs.Response.Product;
 using PointOfSale.Domain.Repositories;
 
@@ -13,21 +12,22 @@ public class GetProductsListUseCase : IGetProductsListUseCase
         _productRepository = productRepository;
     }
 
-    public async Task<IReadOnlyCollection<ProductResponse>> ExecuteAsync(GetProductsListRequest request)
+    public async Task<IEnumerable<ProductListResponse>> ExecuteAsync(GetProductsListRequest request)
     {
         var products = await _productRepository.GetFilteredAsync(request.OnlyActive, request.SearchTerm);
 
-        return products.Select(product => new ProductResponse(
-            product.ProductId,
+        return products.Select(product => new ProductListResponse(
+            product.Id,
             product.Name,
-            product.Description,
-            product.Price,
             product.SKU,
+            product.Price,
+            product.ProductCategories
+                .Select(c => c.CategoryId)
+                .ToList(),
             product.Active,
-            product.ProductCategories.Select(c => c.CategoryId).ToList(),
-            product.Attachments.Select(a => new AttachmentResponse(a.Id, a.Path)).ToList(),
-            product.CreatedAt,
-            product.UpdatedAt
-        )).ToList().AsReadOnly();
+            product.ProductAttachments
+                .FirstOrDefault(pa => pa.IsPrimary)?
+                .Attachment.Path
+        )).ToList();
     }
 }

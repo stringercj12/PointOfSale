@@ -36,39 +36,12 @@ public class PointOfSaleDbContext : DbContext
         {
             entity.HasKey(p => p.Id);
             entity.HasIndex(p => p.SKU).IsUnique();
-            entity.HasMany(p => p.Attachments)
-                .WithMany(a => a.Products)
-                .UsingEntity(
-                    "ProductAttachments",
-                    l => l.HasOne(typeof(Attachment)).WithMany().HasForeignKey("AttachmentId"),
-                    r => r.HasOne(typeof(Product)).WithMany().HasForeignKey("ProductId"),
-                    j =>
-                    {
-                        j.ToTable("ProductAttachments");
-                        j.HasKey("ProductId", "AttachmentId");
-                    });
 
             entity.Navigation(p => p.ProductCategories)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            entity.Navigation(p => p.Attachments)
+            entity.Navigation(p => p.ProductAttachments)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
-        });
-
-        modelBuilder.Entity<ProductCategory>(entity =>
-        {
-            entity.HasKey(pc => new { pc.ProductId, pc.CategoryId });
-
-            entity.HasOne<Product>()
-                .WithMany(p => p.ProductCategories)
-                .HasPrincipalKey(p => p.ProductId)
-                .HasForeignKey(pc => pc.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasOne<Category>()
-                .WithMany()
-                .HasForeignKey(pc => pc.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
         });
 
         modelBuilder.Entity<Attachment>(entity =>
@@ -88,6 +61,42 @@ public class PointOfSaleDbContext : DbContext
 
             entity.Navigation(a => a.Products)
                 .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+        });
+
+        modelBuilder.Entity<ProductCategory>(entity =>
+        {
+            entity.HasKey(pc => new { pc.ProductId, pc.CategoryId });
+
+            entity.HasOne<Product>()
+                .WithMany(p => p.ProductCategories)
+                .HasPrincipalKey(p => p.Id)
+                .HasForeignKey(pc => pc.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne<Category>()
+                .WithMany()
+                .HasForeignKey(pc => pc.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<ProductAttachment>(entity =>
+        {
+            entity.HasKey(x => new
+            {
+                x.ProductId,
+                x.AttachmentId
+            });
+
+            entity.HasOne(x => x.Product)
+                .WithMany(x => x.ProductAttachments)
+                .HasForeignKey(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(x => x.Attachment)
+                .WithMany(x => x.Products)
+                .HasForeignKey(x => x.AttachmentId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

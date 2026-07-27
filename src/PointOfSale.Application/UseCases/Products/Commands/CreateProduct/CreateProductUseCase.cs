@@ -51,8 +51,7 @@ public class CreateProductUseCase : ICreateProductUseCase
             {
                 var foundIds = categories.Select(c => c.Id);
                 var missingIds = distinctCategoryIds.Except(foundIds);
-                throw new NotFoundException(
-                    $"As seguintes categorias não foram encontradas: {string.Join(", ", missingIds)}");
+                throw new NotFoundException($"As seguintes categorias não foram encontradas: {string.Join(", ", missingIds)}");
             }
 
             product.UpdateCategories(categories.Select(c => c.Id).ToList());

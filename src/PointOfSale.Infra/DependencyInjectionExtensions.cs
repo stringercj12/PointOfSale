@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PointOfSale.Application.UseCases.Common;
 using PointOfSale.Application.UseCases.Common.Interfaces;
+using PointOfSale.Application.UseCases.Products.Queries;
 using PointOfSale.Domain.Repositories;
 using PointOfSale.Infra.DataAccess;
 using PointOfSale.Infra.Persistence.Repositories;
@@ -57,7 +58,10 @@ public static class DependencyInjectionExtensions
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<PointOfSaleDbContext>(options =>
-            options.UseSqlServer(connectionString!));
+            options.UseSqlServer(connectionString!)
+                   .EnableSensitiveDataLogging()
+                   .LogTo(Console.WriteLine)
+        );
     }
 
     private static void AddServices(IServiceCollection services)
@@ -70,6 +74,7 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IAttachmentRepository, AttachmentRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }
