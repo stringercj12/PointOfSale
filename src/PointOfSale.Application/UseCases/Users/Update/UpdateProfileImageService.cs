@@ -23,7 +23,7 @@ public class UpdateProfileImageService : IUpdateProfileImageService
         _cryptoService = cryptoService;
     }
 
-    public async Task ExecuteAsync(int userId, IFormFile imageFile)
+    public async Task ExecuteAsync(Guid userId, IFormFile imageFile)
     {
         var user = await _userRepository.FindByIdAsync(userId);
         if (user is null) throw new NotFoundException("Usuário não encontrado");

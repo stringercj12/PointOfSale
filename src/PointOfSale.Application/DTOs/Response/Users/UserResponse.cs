@@ -1,15 +1,14 @@
 ﻿using PointOfSale.Application.Extensions;
 using PointOfSale.Domain.Entities;
-using PointOfSale.Domain.Enums;
 
 namespace PointOfSale.Application.DTOs.Response.Users;
 
 public record UserResponse(
-    int Id,
+    Guid Id,
     string Name,
     string Username,
     string Email,
-    RoleEnum Role,
+    Domain.Enums.Role Role,
     string RoleDescription,
     bool Active,
     string ProfileImage

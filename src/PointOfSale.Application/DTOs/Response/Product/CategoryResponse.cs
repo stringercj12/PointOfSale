@@ -1,7 +1,7 @@
 namespace PointOfSale.Application.DTOs.Response.Product;
 
 public record CategoryResponse(
-    Guid CategoryId,
+    Guid Id,
     string Name,
     string Description,
     bool Active,

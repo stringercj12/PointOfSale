@@ -4,13 +4,13 @@ namespace PointOfSale.Application.Extensions;
 
 public static class RoleEnumExtensions
 {
-    public static string GetDescription(this RoleEnum role)
+    public static string GetDescription(this Role role)
     {
         return role switch
         {
-            RoleEnum.ADMIN => "Administrador",
-            RoleEnum.CLIENT => "Cliente",
-            RoleEnum.OPERATION => "Operação",
+            Role.ADMIN => "Administrador",
+            Role.CLIENT => "Cliente",
+            Role.OPERATION => "Operação",
             _ => role.ToString()
         };
     }

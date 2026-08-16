@@ -11,11 +11,11 @@ public record LoginResponse(
 );
 
 public record UserSessionInfo(
-    int Id,
+    Guid Id,
     string Name,
     string Email,
     [property: JsonConverter(typeof(JsonStringEnumConverter))]
     [property: JsonPropertyName("role")]
-    RoleEnum Role,
+    Role Role,
     string? ProfileImage
 );

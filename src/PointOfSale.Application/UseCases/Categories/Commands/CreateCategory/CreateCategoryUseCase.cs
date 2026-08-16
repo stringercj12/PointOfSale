@@ -33,7 +33,7 @@ public class CreateCategoryUseCase : ICreateCategoryUseCase
         if (existsByName)
             throw new BusinessException($"Category with name {request.Name} already exists");
 
-        var category = Category.Create(request.Name, request.Description);
+        var category = Category.CreateCategory(request.Name, request.Description);
 
         await _categoryRepository.Add(category);
         await _unitOfWork.SaveChangesAsync();

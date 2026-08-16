@@ -25,7 +25,14 @@ public static class ProductMapper
             .AsReadOnly();
 
         var categories = product.ProductCategories
-            .Select(c => c.CategoryId)
+            .Select(c => new CategoryResponse(
+                c.CategoryId,
+                c.Category.Name,
+                c.Category.Description,
+                c.Category.Active,
+                c.Category.CreatedAt,
+                c.Category.UpdatedAt
+                ))
             .ToList()
             .AsReadOnly();
 

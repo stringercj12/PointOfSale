@@ -8,6 +8,8 @@ public class Attachment
     private Attachment()
     {
     }
+    
+
 
     public Guid Id { get; private set; }
     public string Path { get; private set; } = string.Empty;
@@ -15,6 +17,7 @@ public class Attachment
     public string OriginalName { get; private set; } = string.Empty;
     public string Extension { get; private set; } = string.Empty;
     public string ContentType { get; private set; } = string.Empty;
+    public string Hash { get; private set; } = string.Empty;
     public long Size { get; private set; }
     public bool Active { get; private set; }
     public DateTime CreatedAt { get; private set; }
@@ -29,7 +32,8 @@ public class Attachment
         string originalName,
         string extension,
         string contentType,
-        long size)
+        long size,
+        string hash)
     {
         if (string.IsNullOrWhiteSpace(path))
             throw new DomainException("Informe o caminho (path) do arquivo.");
@@ -57,6 +61,7 @@ public class Attachment
             OriginalName = originalName.Trim(),
             Extension = extension.Trim().ToLowerInvariant(),
             ContentType = contentType.Trim().ToLowerInvariant(),
+            Hash = hash,
             Size = size,
             Active = true,
             CreatedAt = DateTime.UtcNow

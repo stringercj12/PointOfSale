@@ -15,14 +15,14 @@ public class UserDeleteService : IUserDeleteService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task ExecuteAsync(int userId)
+    public async Task ExecuteAsync(Guid userId)
     {
         var user = await _userRepository.FindByIdAsync(userId);
 
         if (user is null)
             throw new NotFoundException("User not found");
 
-        if (user.Role == RoleEnum.ADMIN)
+        if (user.Role == Role.ADMIN)
         {
             var adminCount = await _userRepository.CountActiveAdminsAsync();
             if (adminCount <= 1)

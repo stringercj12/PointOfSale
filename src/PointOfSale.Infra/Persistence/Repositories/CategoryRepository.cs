@@ -24,6 +24,11 @@ public class CategoryRepository : ICategoryRepository
         return await _context.Categories.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
     }
 
+    public async Task<Category?> GetForUpdateAsync(Guid id)
+    {
+        return await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
+    }
+
     public async Task<bool> ExistsByName(string name)
     {
         return await _context.Categories

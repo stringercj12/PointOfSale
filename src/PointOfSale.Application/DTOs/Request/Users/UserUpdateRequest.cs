@@ -5,6 +5,6 @@ namespace PointOfSale.Application.DTOs.Request.Users;
 public record UserUpdateRequest(
     string Name,
     string Email,
-    RoleEnum Role,
+    Role Role,
     bool Active
 );

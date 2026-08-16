@@ -4,6 +4,6 @@ namespace PointOfSale.Application.Services.Users.Get;
 
 public interface IUserReadService
 {
-    Task<UserResponse> FindByIdAsync(int userId);
+    Task<UserResponse> FindByIdAsync(Guid userId);
     Task<List<UserResponse>> GetAllActiveAsync(bool active);
 }

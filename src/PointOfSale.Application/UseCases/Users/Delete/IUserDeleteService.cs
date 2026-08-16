@@ -2,5 +2,5 @@
 
 public interface IUserDeleteService
 {
-    Task ExecuteAsync(int userId);
+    Task ExecuteAsync(Guid userId);
 }

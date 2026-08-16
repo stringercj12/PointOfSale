@@ -9,7 +9,7 @@ public record ProductResponse(
     decimal Price,
     string SKU,
     bool Active,
-    IEnumerable<Guid> Categories,
+    IEnumerable<CategoryResponse> Categories,
     IEnumerable<AttachmentResponse> Attachments,
     DateTime CreatedAt,
     DateTime? UpdatedAt

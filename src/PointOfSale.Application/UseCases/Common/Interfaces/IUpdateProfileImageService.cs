@@ -4,5 +4,5 @@ namespace PointOfSale.Application.UseCases.Common.Interfaces;
 
 public interface IUpdateProfileImageService
 {
-    Task ExecuteAsync(int userId, IFormFile imageFile);
+    Task ExecuteAsync(Guid userId, IFormFile imageFile);
 }

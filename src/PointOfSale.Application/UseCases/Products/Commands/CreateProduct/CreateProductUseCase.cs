@@ -49,15 +49,18 @@ public class CreateProductUseCase : ICreateProductUseCase
 
             if (categories.Count != distinctCategoryIds.Count)
             {
-                var foundIds = categories.Select(c => c.Id);
+                var foundIds = categories.Where(c => c.Active).Select(c => c.Id);
+
                 var missingIds = distinctCategoryIds.Except(foundIds);
+
                 throw new NotFoundException($"As seguintes categorias não foram encontradas: {string.Join(", ", missingIds)}");
             }
 
-            product.UpdateCategories(categories.Select(c => c.Id).ToList());
+            product.UpdateCategories(categories);
         }
 
         _productRepository.Add(product);
+
         await _unitOfWork.SaveChangesAsync();
 
         return product.ToResponse();

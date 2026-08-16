@@ -1,4 +1,4 @@
-﻿using PointOfSale.Domain.Enums;
+﻿using PointOfSale.Domain.Exceptions;
 
 namespace PointOfSale.Domain.Entities;
 
@@ -8,24 +8,23 @@ public class User
     {
     }
 
-    public int Id { get; private set; }
+    public Guid Id { get; private set; }
     public string Name { get; private set; } = string.Empty;
     public string Username { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
     public string PasswordHash { get; private set; } = string.Empty;
-    public RoleEnum Role { get; private set; }
+    public Enums.Role Role { get; private set; }
     public bool Active { get; private set; }
     public string? ProfileImage { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
     public static User Create(string name, string username, string email, string profileImagePath, string passwordHash,
-        RoleEnum role)
+        Enums.Role role)
     {
-        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("O nome é obrigatório.");
-        if (string.IsNullOrWhiteSpace(username)) throw new ArgumentException("O username é obrigatório.");
-        if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("O e-mail é obrigatório.");
+        ValidateUserState(name, email);
 
+        if (string.IsNullOrWhiteSpace(username)) throw new DomainException("O username é obrigatório.");
 
         return new User
         {
@@ -40,10 +39,9 @@ public class User
         };
     }
 
-    public void UpdateInfo(string name, string email, RoleEnum role, bool active)
+    public void UpdateInfo(string name, string email, Enums.Role role, bool active)
     {
-        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("O nome não pode ser vazio.");
-        if (string.IsNullOrWhiteSpace(email)) throw new ArgumentException("O e-mail não pode ser vazio.");
+        ValidateUserState(name, email);
 
         Name = name;
         Email = email;
@@ -71,5 +69,11 @@ public class User
     {
         Active = !Active;
         UpdatedAt = DateTime.UtcNow;
+    }
+
+    private static void ValidateUserState(string name, string email)
+    {
+        if (string.IsNullOrWhiteSpace(name)) throw new DomainException("O nome é obrigatório.");
+        if (string.IsNullOrWhiteSpace(email)) throw new DomainException("O e-mail é obrigatório.");
     }
 }

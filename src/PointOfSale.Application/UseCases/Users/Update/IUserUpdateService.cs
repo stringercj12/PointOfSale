@@ -4,5 +4,5 @@ namespace PointOfSale.Application.Services.Users.Update;
 
 public interface IUserUpdateService
 {
-    Task ExecuteAsync(UserUpdateRequest request, int userId);
+    Task ExecuteAsync(UserUpdateRequest request, Guid userId);
 }

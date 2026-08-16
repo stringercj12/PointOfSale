@@ -29,7 +29,7 @@ namespace PointOfSale.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Update([FromServices] IUserUpdateService userUpdateService,
-            [FromRoute] int userId, [FromBody] UserUpdateRequest request)
+            [FromRoute] Guid userId, [FromBody] UserUpdateRequest request)
         {
             await userUpdateService.ExecuteAsync(request, userId);
 
@@ -40,7 +40,7 @@ namespace PointOfSale.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UserCreateResponse>> GetUser([FromServices] IUserReadService userReadService,
-            [FromRoute] int userId)
+            [FromRoute] Guid userId)
         {
             var user = await userReadService.FindByIdAsync(userId);
 
@@ -65,7 +65,7 @@ namespace PointOfSale.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Delete([FromServices] IUserDeleteService userReadService,
-            [FromRoute] int userId)
+            [FromRoute] Guid userId)
         {
             await userReadService.ExecuteAsync(userId);
 

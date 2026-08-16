@@ -31,23 +31,22 @@ public class UpdateProductCategoriesUseCase : IUpdateProductCategoriesUseCase
 
         var distinctCategoryIds = request.CategoryIds.Distinct().ToList();
 
-        var product = await _productRepository.GetByIdAsync(request.ProductId)
-                      ?? throw new NotFoundException($"Produto com ID '{request.ProductId}' não foi encontrado.");
+        var product = await _productRepository.GetByIdAsync(request.ProductId) ?? throw new NotFoundException($"Produto não encontrado.");
 
         var categories = await _categoryRepository.GetByIds(distinctCategoryIds);
 
         if (categories.Count != distinctCategoryIds.Count)
         {
-            var foundIds = categories.Select(c => c.Id);
+            var foundIds = categories.Where(c => c.Active).Select(c => c.Id);
             var missingIds = distinctCategoryIds.Except(foundIds);
 
-            throw new BusinessException(
-                $"As seguintes categorias não foram encontradas: {string.Join(", ", missingIds)}");
+            throw new BusinessException($"As seguintes categorias não foram encontradas: {string.Join(", ", missingIds)}");
         }
 
-        product.UpdateCategories(categories.Select(c => c.Id).ToList());
+        product.UpdateCategories(categories);
 
         _productRepository.Update(product);
+
         await _unitOfWork.SaveChangesAsync();
     }
 }

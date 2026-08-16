@@ -54,15 +54,16 @@ public class Product
         UpdatedAt = DateTime.UtcNow;
     }
 
-    public void UpdateCategories(IEnumerable<Guid> categoriesIds)
+    public void UpdateCategories(IEnumerable<Category> categories)
     {
         EnsureIsActive();
 
-        if (categoriesIds is null)
+        if (categories is null)
             throw new DomainException("Informe pelo menos uma categoria.");
 
         _productCategories.Clear();
-        foreach (var categoryId in categoriesIds) _productCategories.Add(new ProductCategory(Id, categoryId));
+
+        foreach (var category in categories) _productCategories.Add(new ProductCategory(this, category));
 
         UpdatedAt = DateTime.UtcNow;
     }
@@ -94,6 +95,7 @@ public class Product
                 foreach (var attachment in _productAttachments)
                     attachment.SetPrimary(false);
             }
+
 
             _productAttachments.Add(new ProductAttachment(this, item.Attachment, item.IsPrimary, item.DisplayOrder));
         }
@@ -137,7 +139,6 @@ public class Product
 
         UpdatedAt = DateTime.UtcNow;
     }
-
 
     public void ToggleActiveStatus()
     {

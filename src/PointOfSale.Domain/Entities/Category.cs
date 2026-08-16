@@ -1,3 +1,5 @@
+using PointOfSale.Domain.Exceptions;
+
 namespace PointOfSale.Domain.Entities;
 
 public class Category
@@ -7,17 +9,18 @@ public class Category
     }
 
     public Guid Id { get; private set; }
-    public string Name { get; private set; }
-    public string Description { get; private set; }
+    public string Name { get; private set; } = string.Empty;
+    public string Description { get; private set; } = string.Empty;
     public bool Active { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
 
-    public List<Product> Products { get; private set; } = new();
+    public IReadOnlyCollection<ProductCategory> Products => _products.AsReadOnly();
+    private readonly List<ProductCategory> _products = [];
 
-    public static Category Create(string name, string description)
+    public static Category CreateCategory(string name, string description)
     {
-        if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Informe um nome para a categoria.");
+        if (string.IsNullOrWhiteSpace(name)) throw new DomainException("Informe um nome para a categoria.");
 
         return new Category
         {
@@ -27,6 +30,16 @@ public class Category
             Active = true,
             CreatedAt = DateTime.UtcNow
         };
+    }
+
+    public void UpdateCategory(string name, string description, bool active)
+    {
+        if (string.IsNullOrWhiteSpace(name)) throw new DomainException("Informe um nome para a categoria.");
+
+        Name = name;
+        Description = description;
+        Active = active;
+        UpdatedAt = DateTime.UtcNow;
     }
 
     public void ToggleActiveStatus()

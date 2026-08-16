@@ -23,6 +23,15 @@ public class ProductRepository : IProductRepository
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
+    public async Task<Product?> GetBySkuAsync(string sku)
+    {
+        return await _context.Products
+           .AsNoTracking()
+           .Include(p => p.ProductAttachments)
+               .ThenInclude(pa => pa.Attachment)
+           .FirstOrDefaultAsync(x => x.SKU == sku);
+    }
+
     public async Task<Product?> GetForUpdateAsync(Guid id)
     {
         return await _context.Products
@@ -37,6 +46,7 @@ public class ProductRepository : IProductRepository
             .AsNoTracking()
             .Include(p => p.ProductCategories)
             .Include(p => p.ProductAttachments)
+            .ThenInclude(pa => pa.Attachment)
             .AsQueryable();
 
          if (onlyActive.HasValue)
@@ -47,6 +57,19 @@ public class ProductRepository : IProductRepository
             var term = searchTerm.Trim().ToLower();
             query = query.Where(p => p.Name.ToLower().Contains(term) || p.SKU.ToLower().Contains(term));
         }
+
+        return await query.OrderByDescending(p => p.CreatedAt).ToListAsync();
+    }
+    public async Task<IEnumerable<Product>> GetFilteredByCategoryIdAsync(Guid categoryId)
+    {
+        var query = _context.Products
+            .AsNoTracking()
+            .Where(p => p.ProductCategories.Any(pc => pc.CategoryId == categoryId))
+            .Include(p => p.ProductCategories)
+            .Include(p => p.ProductAttachments)
+                .ThenInclude(pa => pa.Attachment)
+            .AsQueryable();
+
 
         return await query.OrderByDescending(p => p.CreatedAt).ToListAsync();
     }

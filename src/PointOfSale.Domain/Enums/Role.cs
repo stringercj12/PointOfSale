@@ -1,6 +1,6 @@
 ﻿namespace PointOfSale.Domain.Enums;
 
-public enum RoleEnum
+public enum Role
 {
     ADMIN = 0,
     CLIENT = 1,

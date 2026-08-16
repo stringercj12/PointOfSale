@@ -20,7 +20,7 @@ public class UserUpdateService : IUserUpdateService
         _validator = validator;
     }
 
-    public async Task ExecuteAsync(UserUpdateRequest request, int userId)
+    public async Task ExecuteAsync(UserUpdateRequest request, Guid userId)
     {
         await _validator.ValidateAndThrowAsync(request);
 

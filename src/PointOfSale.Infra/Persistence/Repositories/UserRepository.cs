@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PointOfSale.Domain.Entities;
-using PointOfSale.Domain.Enums;
 using PointOfSale.Domain.Repositories;
 using PointOfSale.Infra.DataAccess;
 
@@ -30,7 +29,7 @@ public class UserRepository : IUserRepository
         return await _context.Users.AnyAsync(user => user.Email == email);
     }
 
-    public async Task<User?> FindByIdAsync(int userId)
+    public async Task<User?> FindByIdAsync(Guid userId)
     {
         return await _context.Users.Where(user => user.Id == userId).AsNoTracking().FirstOrDefaultAsync();
     }
@@ -64,6 +63,6 @@ public class UserRepository : IUserRepository
     public async Task<int> CountActiveAdminsAsync()
     {
         return await _context.Users
-            .CountAsync(u => u.Role == RoleEnum.ADMIN && u.Active);
+            .CountAsync(u => u.Role == Domain.Enums.Role.ADMIN && u.Active);
     }
 }

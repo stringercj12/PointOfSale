@@ -8,7 +8,7 @@ public record UserCreateRequest(
     string Username,
     string Email,
     string Password,
-    RoleEnum Role,
+    Role Role,
     bool Active,
     IFormFile? ProfileImage
 );

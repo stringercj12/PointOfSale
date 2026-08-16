@@ -14,7 +14,7 @@ public class UserReadService : IUserReadService
         _userRepository = userRepository;
     }
 
-    public async Task<UserResponse> FindByIdAsync(int userId)
+    public async Task<UserResponse> FindByIdAsync(Guid userId)
     {
         var user = await _userRepository.FindByIdAsync(userId);
 

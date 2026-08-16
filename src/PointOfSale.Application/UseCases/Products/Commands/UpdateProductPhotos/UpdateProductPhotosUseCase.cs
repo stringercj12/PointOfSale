@@ -1,11 +1,14 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using PointOfSale.Application.DTOs.Request.Product;
 using PointOfSale.Application.Exceptions;
 using PointOfSale.Application.UseCases.Common.Interfaces;
 using PointOfSale.Application.Validations;
 using PointOfSale.Domain.Entities;
+using PointOfSale.Domain.Exceptions;
 using PointOfSale.Domain.Repositories;
 using System.Collections.Concurrent;
+using System.Security.Cryptography;
 
 namespace PointOfSale.Application.UseCases.Products.Commands.UpdateProductPhotos;
 
@@ -36,7 +39,7 @@ public class UpdateProductPhotosUseCase : IUpdateProductPhotosUseCase
         _validator.ValidateAndThrowCustom(request);
 
         var product = await _productRepository.GetForUpdateAsync(request.ProductId)
-                      ?? throw new NotFoundException($"Produto com ID '{request.ProductId}' não foi encontrado.");
+                      ?? throw new NotFoundException($"Produto não encontrado.");
 
         var uploadedFilePaths = new ConcurrentBag<string>();
         var newAttachments = new List<(Attachment, bool, int)>();
@@ -46,9 +49,15 @@ public class UpdateProductPhotosUseCase : IUpdateProductPhotosUseCase
 
             foreach (var photoDto in request.ProductPhotos)
             {
+                if (await AttachmentAlreadyExistsAsync(product, photoDto.Photo))
+                    throw new DomainException(
+                        $"A imagem '{photoDto.Photo.FileName}' já foi adicionada ao produto.");
+
                 var extension = Path.GetExtension(photoDto.Photo.FileName);
                 var storedName = $"{Guid.NewGuid()}{extension}";
                 var path = $"products/{product.Id}/{storedName}";
+
+                var hash = await GetFileHashAsync(photoDto.Photo);
 
                 var attachment = Attachment.Create(
                     path,
@@ -56,7 +65,8 @@ public class UpdateProductPhotosUseCase : IUpdateProductPhotosUseCase
                     photoDto.Photo.FileName,
                     extension,
                     photoDto.Photo.ContentType,
-                    photoDto.Photo.Length
+                    photoDto.Photo.Length,
+                    hash
                 );
 
 
@@ -79,7 +89,7 @@ public class UpdateProductPhotosUseCase : IUpdateProductPhotosUseCase
 
             await _unitOfWork.SaveChangesAsync();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
 
             if (!uploadedFilePaths.IsEmpty)
@@ -92,4 +102,30 @@ public class UpdateProductPhotosUseCase : IUpdateProductPhotosUseCase
         }
 
     }
+
+    private static async Task<string> GetFileHashAsync(IFormFile file)
+    {
+        await using var stream = file.OpenReadStream();
+
+        using var sha256 = SHA256.Create();
+
+        var hashBytes = await sha256.ComputeHashAsync(stream);
+
+        return Convert.ToHexString(hashBytes);
+    }
+
+    private async Task<bool> AttachmentAlreadyExistsAsync(Product product, IFormFile file)
+    {
+        await using var stream = file.OpenReadStream();
+
+        using var sha256 = SHA256.Create();
+
+        var hashBytes = await sha256.ComputeHashAsync(stream);
+
+        var hash = Convert.ToHexString(hashBytes);
+
+        return product.ProductAttachments.Any(pa =>
+            pa.Attachment.Hash == hash);
+    }
+
 }

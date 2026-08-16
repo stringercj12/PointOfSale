@@ -26,7 +26,13 @@ public class GetProductByIdUseCase : IGetProductByIdUseCase
             product.Price,
             product.SKU,
             product.Active,
-            product.ProductCategories.Select(c => c.CategoryId).ToList(),
+            product.ProductCategories.Select(c => new CategoryResponse(
+                c.CategoryId, 
+                c.Category.Name,
+                c.Category.Description, 
+                c.Category.Active,
+                c.Category.CreatedAt,
+                c.Category.UpdatedAt)).ToList(),
             product.ProductAttachments.Select(a => new AttachmentResponse(
                 a.Attachment.Id,
                 a.Attachment.Path,

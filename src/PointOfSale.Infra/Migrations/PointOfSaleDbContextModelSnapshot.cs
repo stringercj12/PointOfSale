@@ -43,6 +43,10 @@ namespace PointOfSale.Infra.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<string>("Hash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -99,6 +103,58 @@ namespace PointOfSale.Infra.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("PointOfSale.Domain.Entities.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DateOfSale")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentType")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalGeneral")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("PointOfSale.Domain.Entities.OrderItem", b =>
+                {
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("OrderId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrdersItem");
+                });
+
             modelBuilder.Entity("PointOfSale.Domain.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -107,9 +163,6 @@ namespace PointOfSale.Infra.Migrations
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
-
-                    b.Property<Guid?>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -133,8 +186,6 @@ namespace PointOfSale.Infra.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("SKU")
                         .IsUnique();
@@ -178,13 +229,33 @@ namespace PointOfSale.Infra.Migrations
                     b.ToTable("ProductCategory");
                 });
 
-            modelBuilder.Entity("PointOfSale.Domain.Entities.User", b =>
+            modelBuilder.Entity("PointOfSale.Domain.Entities.Table", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.HasKey("Id");
+
+                    b.ToTable("Tables");
+                });
+
+            modelBuilder.Entity("PointOfSale.Domain.Entities.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
@@ -228,11 +299,34 @@ namespace PointOfSale.Infra.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PointOfSale.Domain.Entities.Product", b =>
+            modelBuilder.Entity("PointOfSale.Domain.Entities.Order", b =>
                 {
-                    b.HasOne("PointOfSale.Domain.Entities.Category", null)
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId");
+                    b.HasOne("PointOfSale.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PointOfSale.Domain.Entities.OrderItem", b =>
+                {
+                    b.HasOne("PointOfSale.Domain.Entities.Order", "Order")
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PointOfSale.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("PointOfSale.Domain.Entities.ProductAttachment", b =>
@@ -256,17 +350,21 @@ namespace PointOfSale.Infra.Migrations
 
             modelBuilder.Entity("PointOfSale.Domain.Entities.ProductCategory", b =>
                 {
-                    b.HasOne("PointOfSale.Domain.Entities.Category", null)
-                        .WithMany()
+                    b.HasOne("PointOfSale.Domain.Entities.Category", "Category")
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PointOfSale.Domain.Entities.Product", null)
+                    b.HasOne("PointOfSale.Domain.Entities.Product", "Product")
                         .WithMany("ProductCategories")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("PointOfSale.Domain.Entities.Attachment", b =>
@@ -277,6 +375,11 @@ namespace PointOfSale.Infra.Migrations
             modelBuilder.Entity("PointOfSale.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("PointOfSale.Domain.Entities.Order", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("PointOfSale.Domain.Entities.Product", b =>
