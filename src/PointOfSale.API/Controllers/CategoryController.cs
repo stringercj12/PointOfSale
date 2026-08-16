@@ -10,7 +10,7 @@ using PointOfSale.Application.UseCases.Categories.Queries.GetCategoriesList;
 namespace PointOfSale.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class CategoryController : ControllerBase
 {
     [HttpPost]

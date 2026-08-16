@@ -17,6 +17,10 @@ using PointOfSale.Application.UseCases.Products.Commands.UpdateProductPhotos;
 using PointOfSale.Application.UseCases.Products.Queries.GetProductById;
 using PointOfSale.Application.UseCases.Products.Queries.GetProductsByCategory;
 using PointOfSale.Application.UseCases.Products.Queries.GetProductsList;
+using PointOfSale.Application.UseCases.Tables.Commands;
+using PointOfSale.Application.UseCases.Tables.Commands.UpdateStatus;
+using PointOfSale.Application.UseCases.Tables.Queries.GetListOfTables;
+using PointOfSale.Application.UseCases.Tables.Queries.GetTableByIdUseCase;
 using PointOfSale.Application.UseCases.Users.Create;
 using PointOfSale.Application.UseCases.Users.Delete;
 using PointOfSale.Application.UseCases.Users.Login;
@@ -61,6 +65,13 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IDisableCategoryUseCase, DisableCategoryUseCase>();
 
         // Use Cases - Attachment
+
+
+        // Use Cases - Tables
+        services.AddScoped<IGetListOfTablesUseCase, GetListOfTablesUseCase>();
+        services.AddScoped<IGetTableByIdUseCase, GetTableByIdUseCase>();
+        services.AddScoped<ICreateTableUseCase, CreateTableUseCase>();
+        services.AddScoped<IUpdateTableStatusUseCase, UpdateTableStatusUseCase>();
 
         return services;
     }

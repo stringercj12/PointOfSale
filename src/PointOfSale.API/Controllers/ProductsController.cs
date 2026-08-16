@@ -12,7 +12,7 @@ using PointOfSale.Application.UseCases.Products.Queries.GetProductsList;
 namespace PointOfSale.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
         [HttpGet]

@@ -22,7 +22,8 @@ public class PointOfSaleDbContext : DbContext
         base.OnModelCreating(modelBuilder);
 
 
-        // Tables
+        // Tables Configs
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(u => u.Id);
@@ -33,6 +34,17 @@ public class PointOfSaleDbContext : DbContext
         modelBuilder.Entity<Table>(entity =>
         {
             entity.HasKey(u => u.Id);
+            entity.Property(t => t.Name)
+            .IsRequired()
+            .HasMaxLength(100);
+
+            entity.Property(t => t.Number)
+            .IsRequired();
+
+            entity.Property(t => t.Status)
+            .HasConversion<string>()
+            .HasMaxLength(20)
+            .IsRequired();
         });
 
         modelBuilder.Entity<Category>(entity =>
